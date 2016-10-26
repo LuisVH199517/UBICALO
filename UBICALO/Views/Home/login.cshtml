@@ -10,7 +10,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>GYMFIND - Login</title>
+    <title>Ubícalo - Login</title>
     <!-- CSS -->
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500">
     <link rel="stylesheet" href="@Url.Content("~/Content/bootstrap/css/bootstrap.min.css")">
@@ -63,7 +63,7 @@
                                     <div class="form-group">
                                         <label class="sr-only" for="form-password">Contraseña</label>
                                         @*<input type="password" name="form-password" placeholder="Contraseña" class="form-password form-control" id="form-password">*@
-                                        @Html.EditorFor(x => x.clave, new { htmlAttributes = new { @type = "password", @placeholder = "contraseña", @class = "form-password form-control", @name = "form-password", @id = "form-password" } })
+                                        @Html.EditorFor(x => x.clave, new { htmlAttributes = new { @type = "password", @placeholder = "Contraseña", @class = "form-password form-control", @name = "form-password", @id = "form-password" } })
                                         @Html.ValidationMessageFor(x => x.clave)
                                     </div>
                                     <button type="submit" class="btn">Login</button>
@@ -145,11 +145,10 @@
 
                     </div>
                 </div>
-
             </div>
         </div>
-
     </div>
+
     <form id="miform" name="miform" role="form" method="post" action="@Url.Action("loginFB")">
         @Html.HiddenFor(x => x.FbID, new { @name = "XXIDRS", @id = "XXIDRS" })
         @*@Html.HiddenFor(x => x.usuarioobjCliente.TIPORS, new { @name = "XXTipoRS", @id = "XXTipoRS" })*@
@@ -161,7 +160,7 @@
     <script>
         window.fbAsyncInit = function () {
             FB.init({
-                appId: '485611161643393',
+                appId: '650623418434415',
                 xfbml: true,
                 version: 'v2.6'
             });
@@ -195,14 +194,14 @@
         function loginfb() {
             FB.login(function (response) {
                 if (response.status === 'connected') {
-                    FB.api('/me', 'GET', { fields: 'id,email,first_name,last_name' },
+                    FB.api('/me', 'GET', { fields: 'id, email, first_name, last_name' },
                 function (response) {
 
                     document.getElementById("XXIDRS").value = response.id;
-                    document.getElementById("XXnombre").value = response.first_name;
+                    document.getElementById("XXnombre").value = response.first_name + response.last_name;
                     //document.getElementById("XXapellido").value = response.last_name;
                     //document.getElementById("XXTipoRS").value = "Facebook";
-                    document.getElementById("XXcorreo").value = response.email;
+                    //document.getElementById("XXcorreo").value = response.email;
                     document.getElementById("XXImgRS").value = "http://graph.facebook.com/" + response.id + "/picture?type=large";
                     document.getElementById("miform").submit();
                 });

@@ -58,7 +58,7 @@
 
                         var desc = "<img style='width:350px' src='@Url.Content(@p.imagen)'><br>"+
                         "<p><h1> @p.Nombre </h1><a href='@Url.Action("establecimientoInfo", new { establecimientoID = p.EstablecimientoID })'>" +
-                        "<strong>Ver planes aqui.. </strong></a></p>@p.Direccion<br>@p.Portal";
+                        "<strong>Ver productos y servicios</strong></a></p>@p.Direccion<br>@p.Portal";
 
                         addMarker(posMarkers, '@p.Nombre', desc);
                     </text>
@@ -85,7 +85,7 @@
             position: location,
             map: map,
             //draggable:true,
-            title: "Gimnasio "+titulo,
+            title: titulo,
             //icon: '@Url.Content("~/Content/images/marker.png")'
         });
 

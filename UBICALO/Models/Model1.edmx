@@ -39,7 +39,7 @@
           <Property Name="Clave" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Correo" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="IDApi" Type="varchar" MaxLength="50" />
-          <Property Name="Foto" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Foto" Type="varchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <EntityType Name="Compra">
           <Key>
@@ -56,7 +56,7 @@
           </Key>
           <Property Name="EstablecimientoID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Direccion" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Direccion" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="RUC" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Latitud" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Longitud" Type="varchar" MaxLength="50" Nullable="false" />
@@ -70,7 +70,7 @@
           </Key>
           <Property Name="ProductoID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Descripcion" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="Costo" Type="float" Nullable="false" />
           <Property Name="EstablecimientoID" Type="int" Nullable="false" />
           <Property Name="CategoriaID" Type="int" Nullable="false" />
@@ -263,7 +263,7 @@
           <Property Name="Clave" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Correo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="IDApi" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Foto" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Foto" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Compra" Relationship="UbicaloModel.FK_Compra_Cliente" FromRole="Cliente" ToRole="Compra" />
         </EntityType>
         <EntityType Name="Compra">
@@ -283,7 +283,7 @@
           </Key>
           <Property Name="EstablecimientoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Direccion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Direccion" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="RUC" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Latitud" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Longitud" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -300,7 +300,7 @@
           </Key>
           <Property Name="ProductoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="Costo" Type="Double" Nullable="false" />
           <Property Name="EstablecimientoID" Type="Int32" Nullable="false" />
           <Property Name="CategoriaID" Type="Int32" Nullable="false" />
@@ -389,7 +389,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
