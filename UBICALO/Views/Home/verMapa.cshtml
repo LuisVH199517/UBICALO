@@ -1,7 +1,7 @@
 ﻿@model UBICALO.ViewModel.VmEstaMapa
 
 @{
-    ViewBag.Title = "Mapa";
+    ViewBag.Title = "Establecimientos cercanos";
 }
 
 <div class="jumbotron">
@@ -45,7 +45,7 @@
 
                 myCity.setMap(map)
 
-
+                addMarker(pos, "Yo", "Aquí estoy");
 
                 // Añade markers en la posición actual
 
@@ -86,7 +86,7 @@
             map: map,
             //draggable:true,
             title: titulo,
-            //icon: '@Url.Content("~/Content/images/marker.png")'
+            //icon: 'Url.Content("~/Content/images/marker.png")'
         });
 
         var infowindow = new google.maps.InfoWindow({

@@ -1,0 +1,69 @@
+﻿@model UBICALO.ViewModel.VmEstablecimientoBusqueda
+@{
+    ViewBag.Title = "Buscar establecimientos";
+}
+
+<div class="page-title">
+    <div class="title_left">
+        <h3>Búsqueda de establecimientos</h3>
+    </div>
+
+    <form role="form" method="post" action="@Url.Action("establecimientoBusqueda")">
+        <div class="title_right">
+            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                <div class="input-group">
+                    @Html.EditorFor(x => x.filtro, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nombre de establecimiento..." } })
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">Buscar</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="clearfix"></div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="x_panel">
+            <div class="x_title">
+
+                <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li>
+                        <a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+
+            <div class="x_content">
+                <div class="row">
+                    @foreach (var p in @Model.lista)
+                    {
+                        <div class="col-md-55">
+                            <div class="thumbnail">
+                                <div class="image view view-first">
+                                    <img style="width: 100%; display: block;" src="@Url.Content(@p.imagen)" alt="image">
+                                    <div class="mask">
+                                        <p>@p.Direccion.Substring(0,20) ...</p>
+                                        <div class="tools tools-bottom">
+                                            <a href="@Url.Action("establecimientoInfo", new { establecimientoID = p.EstablecimientoID }) "><i class="fa fa-eye"></i/></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="caption">
+                                    <p>@p.Nombre</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

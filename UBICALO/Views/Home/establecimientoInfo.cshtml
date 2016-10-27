@@ -1,14 +1,21 @@
 ﻿
 @model UBICALO.ViewModel.VmEstablecimientoInfo
 @{
-    ViewBag.Title = "Productos y servicios de "+Model.establecimientoNombre;
+    ViewBag.Title = "Productos y servicios";
 }
 
 <div class="">
 
     <div class="page-title">
         <div class="title_left">
-            <h3>Productos y servicios</h3>
+            @if (Model.establecimientoNombre != null)
+            {
+                <h3>Productos y servicios de @Model.establecimientoNombre</h3>
+            }
+            else
+            {
+                <h3>Productos y </h3>
+            }
         </div>
     </div>
 

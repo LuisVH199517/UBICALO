@@ -1,6 +1,6 @@
 ﻿@model UBICALO.ViewModel.VmLogin
 @{
-    ViewBag.Title = "Login";
+    ViewBag.Title = "Ubícalo - Login";
     Layout = null;
 }
 
@@ -150,12 +150,12 @@
     </div>
 
     <form id="miform" name="miform" role="form" method="post" action="@Url.Action("loginFB")">
-        @Html.HiddenFor(x => x.FbID, new { @name = "XXIDRS", @id = "XXIDRS" })
+        @Html.HiddenFor(x => x.FbID, new { @name = "fbId", @id = "fbId" })
         @*@Html.HiddenFor(x => x.usuarioobjCliente.TIPORS, new { @name = "XXTipoRS", @id = "XXTipoRS" })*@
-        @Html.HiddenFor(x => x.usuario, new { @name = "XXnombre", @id = "XXnombre" })
+        @Html.HiddenFor(x => x.usuario, new { @name = "fbNombre", @id = "fbNombre" })
         @*@Html.HiddenFor(x => x.objCliente.Apellido, new { @name = "XXapellido", @id = "XXapellido" })*@
-        @Html.HiddenFor(x => x.correo, new { @name = "XXcorreo", @id = "XXcorreo" })
-        @Html.HiddenFor(x => x.imagen, new { @name = "XXImgRS", @id = "XXImgRS" })
+        @Html.HiddenFor(x => x.correo, new { @name = "fbCorreo", @id = "fbCorreo" })
+        @Html.HiddenFor(x => x.imagen, new { @name = "fbImgRS", @id = "fbImgRS" })
     </form>
     <script>
         window.fbAsyncInit = function () {
@@ -197,12 +197,12 @@
                     FB.api('/me', 'GET', { fields: 'id, email, first_name, last_name' },
                 function (response) {
 
-                    document.getElementById("XXIDRS").value = response.id;
-                    document.getElementById("XXnombre").value = response.first_name + response.last_name;
+                    document.getElementById("fbId").value = response.id;
+                    document.getElementById("fbNombre").value = response.first_name + response.last_name;
                     //document.getElementById("XXapellido").value = response.last_name;
                     //document.getElementById("XXTipoRS").value = "Facebook";
-                    //document.getElementById("XXcorreo").value = response.email;
-                    document.getElementById("XXImgRS").value = "http://graph.facebook.com/" + response.id + "/picture?type=large";
+                    document.getElementById("fbCorreo").value = response.email;
+                    document.getElementById("fbImgRS").value = "http://graph.facebook.com/" + response.id + "/picture?type=large";
                     document.getElementById("miform").submit();
                 });
                     console.log('Logged in.');

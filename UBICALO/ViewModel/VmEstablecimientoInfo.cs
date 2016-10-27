@@ -24,8 +24,13 @@ namespace UBICALO.ViewModel
 
             productos = query.ToList();
 
-            Establecimiento e = context.Establecimiento.FirstOrDefault(x => x.EstablecimientoID == establecimientoID);
-            establecimientoNombre = e.Nombre;
+            establecimientoNombre = null;
+
+            if (establecimientoID != -1)
+            {
+                Establecimiento e = context.Establecimiento.FirstOrDefault(x => x.EstablecimientoID == establecimientoID);
+                establecimientoNombre = e.Nombre;
+            }
         }
     }
 }

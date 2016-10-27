@@ -1,5 +1,220 @@
 ﻿
-
 @{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Ubícalo";
+    Layout = null;
 }
+
+<!DOCTYPE html>
+<html lang="en">
+<!-- Mirrored from www.themearmada.com/demos/boxia/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 03 Jun 2016 14:43:22 GMT -->
+<head>
+    <meta charset="utf-8">
+    <title>@ViewBag.Title</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <meta property="og:title" content="">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="">
+    <meta property="og:site_name" content="">
+    <meta property="og:description" content="">
+    <!-- Styles -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/font-awesome.min.css")">
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/animate.css")">
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/slippry.css")">
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/bootstrap.min.css")">
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/main.css")">
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/colors/green.css")"><!--Replace Your Color-->
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/custom-styles.css")">
+
+    <!-- Switcher Only -->
+    <link rel="stylesheet" id="switcher-css" type="text/css" href="css/switcher.css" media="all" />
+    <!-- END Switcher Styles -->
+    <!-- Demo Examples -->
+    <link rel="alternate stylesheet" type="text/css" href="@Url.Content("~/Content/css/colors/blue.css")" title="blue" media="all" />
+    <link rel="alternate stylesheet" type="text/css" href="@Url.Content("~/Content/css/colors/green.css")" title="green" media="all" />
+    <link rel="alternate stylesheet" type="text/css" href="@Url.Content("~/Content/css/colors/orange.css")" title="orange" media="all" />
+    <link rel="alternate stylesheet" type="text/css" href="@Url.Content("~/Content/css/colors/pink.css")" title="pink" media="all" />
+    <link rel="alternate stylesheet" type="text/css" href="@Url.Content("~/Content/css/colors/purple.css")" title="purple" media="all" />
+    <link rel="alternate stylesheet" type="text/css" href="@Url.Content("~/Content/css/colors/red.css")" title="red" media="all" />
+    <link rel="alternate stylesheet" type="text/css" href="@Url.Content("~/Content/css/colors/teal.css")" title="teal" media="all" />
+    <link rel="alternate stylesheet" type="text/css" href="ccss/colors/yellow.css" )" title="yellow" media="all" />
+    <!-- END Demo Examples -->
+
+    <script src="@Url.Content("~/Content/js/modernizr-2.7.1.js")"></script>
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../../apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../../apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../../apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../../apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="http://www.themearmada.com/favicon.ico">
+
+
+
+
+
+</head>
+<body id="top" data-spy="scroll" data-target=".navbar" data-offset="30">
+
+    <div class="wrapper">
+
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="active">
+                            <a href="#top" class="scroll">Inicio</a>
+                        </li>
+                        <li>
+                            <a href="#services" class="scroll">Servicios</a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="@Url.Action("Login")">Login</a>
+                        </li>
+                    </ul>
+                </div>
+                <!--/.navbar-collapse -->
+            </div>
+        </div>
+
+
+        <!--Header-->
+        <section id="header" class="color-bg">
+
+            <!--Header Slides. Add you caption in the image alt text. See below for examples-->
+            <ul id="slippry-header" class="animated fadeIn list-unstyled">
+                <li>
+                    <a href="@Url.Action("Login")"><img src="@Url.Content("~/Content/img/header1.jpg")" alt="ENCUENTRA LOS SUPERMERCADOS MÁS CERCANOS"></a>
+                </li>
+                <li>
+                    <a href="@Url.Action("Login")"><img src="@Url.Content("~/Content/img/header2.jpg")" alt="ENCUENTRA LAS FERRETERíAS MÁS CERCANAS"></a>
+                </li>
+                <li>
+                    <a href="@Url.Action("Login")"><img src="@Url.Content("~/Content/img/header3.jpg")" alt="ENCUENTRA LOS GIMNASIOS MÁS CERCANOS"></a>
+                </li>
+                <li>
+                    <a href="@Url.Action("Login")"><img src="@Url.Content("~/Content/img/header4.jpg")" alt="ENCUENTRA LAS VERDULERÍAS MÁS CERCANAS"></a>
+                </li>
+            </ul>
+
+
+            <div class="container">
+
+                <!--Brand-->
+                <div class="row brand">
+
+                </div>
+
+            </div><!--End Container-->
+
+        </section>
+
+
+        <!--Services-->
+        <section id="services" class="white-bg">
+            <div class="container">
+                <div class="row margin-60">
+                    <div class="col-sm-12 text-center">
+                        <h2>¿Cómo funciona Ubícalo?</h2>
+                    </div>
+                </div>
+
+                <div class="row margin-60">
+                    
+                    <!--Section-->
+                    <div class="col-sm-4 margin-20 wow fadeInUp" data-wow-delay="0.0s">
+                        <div class="text-center margin-20"><i class="fa fa-facebook-square fa-4x black"></i></div>
+                        <p>Ingresa a Ubícalo mediante tu nombre de usuario o cuenta de Facebook.</p>
+                    </div>
+
+                    <!--Section-->
+                    <div class="col-sm-4 margin-20 wow fadeInUp" data-wow-delay="0.4s">
+                        <div class="text-center margin-20"><i class="fa fa-crosshairs fa-4x black"></i></div>
+                        <p>Encuentra a los establecimientos más cercanos según los productos que desees.</p>
+                    </div>
+
+                    <!--Section-->
+                    <div class="col-sm-4 margin-20 wow fadeInUp" data-wow-delay="0.8s">
+                        <div class="text-center margin-20"><i class="fa fa-credit-card fa-4x black"></i></div>
+                        <p>Realiza la compra de los productos o servicios que desees. ¡Puedes recibir descuentos!</p>
+                    </div>
+
+                </div><!--End Row-->
+            </div>
+        </section>
+
+
+
+
+
+        <section id="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12 text-center">
+
+                        <p><small>Ubícalo - Luminous Group.</small></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div><!--End Wrapper-->
+
+    <a href="#" class="scrollToTop"><i class="fa fa-chevron-up"></i></a>
+
+
+
+    <!-- ADD Switcher -->
+    <!-- END Switcher -->
+    <!-- Javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../../../ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="@Url.Content("~/Content/js/jquery-1.11.0.min.js")" ><\/script>')</script>
+    <script src="@Url.Content("~/Content/js/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/Content/js/wow.min.js")"></script>
+    <script src="@Url.Content("~/Content/js/jquery.isotope.min.js")"></script>
+    <script src="@Url.Content("~/Content/js/jquery.validate.min.js")"></script>
+    <script src="@Url.Content("~/Content/js/twitter-fetch.js")"></script>
+    <script src="@Url.Content("~/Content/js/slippry.min.js")"></script>
+    <script src="@Url.Content("~/Content/js/fswit.js")"></script>
+    <script src="@Url.Content("~/Content/js/main.js")"></script>
+
+    <script>
+    jQuery(document).ready(function(){
+      jQuery('#slippry-header').slippry({
+        transition: 'fade',
+        controls: false,
+        pause: 4000,
+        auto: true
+      });
+    });
+    </script>
+
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','../../../www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-40190001-1', 'themearmada.com');
+      ga('send', 'pageview');
+
+    </script>
+
+
+</body>
+<!-- Mirrored from www.themearmada.com/demos/boxia/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 03 Jun 2016 14:44:55 GMT -->
+</html>

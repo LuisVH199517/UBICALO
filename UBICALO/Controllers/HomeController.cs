@@ -5,6 +5,13 @@ using System.Web;
 using System.Web.Mvc;
 using UBICALO.ViewModel;
 using UBICALO.Models;
+using System.IO;
+
+using System.Drawing;
+using System.Drawing.Imaging;
+
+//using QRCoder;
+
 
 namespace UBICALO.Controllers
 {
@@ -74,22 +81,37 @@ namespace UBICALO.Controllers
             }
         }
 
-        public ActionResult verMapa()
+
+        [HttpPost]
+        public ActionResult registrarUsuario(VmLogin vm)
         {
-            VmEstaMapa vm = new VmEstaMapa();
-            vm.fill();
+            try
+            {
+                Cliente cliente = new Cliente();
+                cliente.Usuario = vm.usuario;
+                cliente.Clave = vm.clave;
+                cliente.Correo = vm.correo;
+                cliente.IDApi = null;
+                cliente.Foto = "/Content/images/users/user.png";
+                //string imageFile = System.Web.HttpContext.Current.Server.MapPath("~/Content/images/user.png");
+                //var srcImage = Image.FromFile(imageFile);
+                //var stream = new MemoryStream();
+                //srcImage.Save(stream, ImageFormat.Png);
+                //cliente.Foto= stream.ToArray();
+                //cliente.Rol = "User";
 
-            return View(vm);
-        }
+                UbicaloEntities context = new UbicaloEntities();
 
-        public ActionResult establecimientoInfo(int establecimientoID)
-        {
-
-            VmEstablecimientoInfo vm = new VmEstablecimientoInfo();
-            vm.establecimientoID = establecimientoID;
-            vm.fill();
-
-            return View(vm);
+                context.Cliente.Add(cliente);
+                context.SaveChanges();
+                Session["objUsuario"] = cliente;
+                Session["rol"] = "C";
+                return RedirectToAction("verMapa");
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("login");
+            }
         }
 
 
@@ -98,7 +120,6 @@ namespace UBICALO.Controllers
         {
             try
             {
-
                 UbicaloEntities context = new UbicaloEntities();
                 Cliente cliente = context.Cliente.FirstOrDefault(x => x.IDApi == vm.FbID);
 
@@ -108,7 +129,7 @@ namespace UBICALO.Controllers
                     cliente = new Cliente();
                     cliente.Usuario = vm.usuario;
                     cliente.Clave = "";
-                    if (vm.correo != null)
+                    if (vm.correo != null && vm.correo != "undefined")
                         cliente.Correo = vm.correo;
                     else
                         cliente.Correo = "";
@@ -135,10 +156,9 @@ namespace UBICALO.Controllers
                 Session["rol"] = "C";
                 return RedirectToAction("verMapa");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                string a = ex.ToString();
-                throw;
+                return RedirectToAction("login");
             }
         }
 
@@ -151,12 +171,45 @@ namespace UBICALO.Controllers
 
 
 
+        public ActionResult verMapa()
+        {
+            VmEstaMapa vm = new VmEstaMapa();
+            vm.fill();
+
+            return View(vm);
+        }
+
+
+        public ActionResult establecimientoBusqueda()
+        {
+            VmEstablecimientoBusqueda vm = new VmEstablecimientoBusqueda();
+            vm.fill();
+            
+            return View(vm);
+        }
+
+        [HttpPost]
+        public ActionResult establecimientoBusqueda(VmEstablecimientoBusqueda vm)
+        {
+            vm.fill();
+
+            return View(vm);
+        }
+
+
+        public ActionResult establecimientoInfo(int establecimientoID)
+        {
+
+            VmEstablecimientoInfo vm = new VmEstablecimientoInfo();
+            vm.establecimientoID = establecimientoID;
+            vm.fill();
+
+            return View(vm);
+        }
 
 
 
-
-
-        public ActionResult compraPlan(int productoID)
+        public ActionResult compraProducto(int productoID)
         {
             VmCompraProducto vm = new VmCompraProducto();
 
@@ -166,7 +219,7 @@ namespace UBICALO.Controllers
         }
 
         [HttpPost]
-        public ActionResult compraPlan(VmCompraProducto vm)
+        public ActionResult compraProducto(VmCompraProducto vm)
         {
             try
             {
@@ -226,6 +279,24 @@ namespace UBICALO.Controllers
 
             return View(vm);
         }
+
+
+        //respnde una imagen conelid de peticion y genera un codigo q a paritr de esto
+        //public ActionResult getQr(int id)
+        //{
+        //    string text = id.ToString();
+
+        //    QRCodeGenerator qrc = new QRCodeGenerator();
+        //    QRCodeGenerator.QRCode qc = qrc.CreateQrCode(text, QRCodeGenerator.ECCLevel.Q);
+        //    Bitmap bmp = qc.GetGraphic(20);
+
+        //    MemoryStream ms = new MemoryStream();
+
+        //    bmp.Save(ms, ImageFormat.Png);
+
+        //    byte[] bt = ms.ToArray();
+        //    return File(bt, "image/png");
+        //}
 
 
     }
