@@ -27,7 +27,7 @@
 <div class="row">
     <div class="col-md-12">
         <div class="x_panel">
-            <div class="x_title">
+            <!--<div class="x_title">
 
                 <ul class="nav navbar-right panel_toolbox">
                     <li>
@@ -38,7 +38,7 @@
                     </li>
                 </ul>
                 <div class="clearfix"></div>
-            </div>
+            </div>-->
 
             <div class="x_content">
                 <div class="row">
@@ -47,7 +47,7 @@
                         <div class="col-md-55">
                             <div class="thumbnail">
                                 <div class="image view view-first">
-                                    <img style="width: 100%; display: block;" src="@Url.Content(@p.imagen)" alt="image">
+                                    <img style="width: 100%; display: block;" src="@Url.Content("~/Content/images/establecimientos/"+@p.imagen)" alt="image">
                                     <div class="mask">
                                         <p>@p.Direccion.Substring(0,20) ...</p>
                                         <div class="tools tools-bottom">

@@ -52,6 +52,8 @@ namespace UBICALO.Controllers
                 Cliente cliente = context.Cliente.FirstOrDefault(x => x.Usuario == vm.usuario && x.Clave == vm.clave);
                 if (cliente != null)
                 {
+                    if (cliente.IDApi != null)
+                        return RedirectToAction("login");
                     Session["objUsuario"] = cliente;
                     Session["rol"] = "C";
                     return RedirectToAction("verMapa");
@@ -92,7 +94,7 @@ namespace UBICALO.Controllers
                 cliente.Clave = vm.clave;
                 cliente.Correo = vm.correo;
                 cliente.IDApi = null;
-                cliente.Foto = "/Content/images/users/user.png";
+                cliente.Foto = "user.png";
                 //string imageFile = System.Web.HttpContext.Current.Server.MapPath("~/Content/images/user.png");
                 //var srcImage = Image.FromFile(imageFile);
                 //var stream = new MemoryStream();
@@ -125,7 +127,6 @@ namespace UBICALO.Controllers
 
                 if (cliente == null)
                 {
-
                     cliente = new Cliente();
                     cliente.Usuario = vm.usuario;
                     cliente.Clave = "";
@@ -134,7 +135,7 @@ namespace UBICALO.Controllers
                     else
                         cliente.Correo = "";
                     cliente.IDApi = vm.FbID;
-                    cliente.Foto = vm.imagen;
+                    cliente.Foto = vm.FbID; //vm.imagen;
 
                     //string imageFile = System.Web.HttpContext.Current.Server.MapPath("~/Content/images/user.png");
                     //var srcImage = Image.FromFile(imageFile);
@@ -162,6 +163,11 @@ namespace UBICALO.Controllers
             }
         }
 
+        public ActionResult configurarCuenta()
+        {
+            return View();
+        }
+
 
         public ActionResult cerrarSesion()
         {
@@ -184,7 +190,7 @@ namespace UBICALO.Controllers
         {
             VmEstablecimientoBusqueda vm = new VmEstablecimientoBusqueda();
             vm.fill();
-            
+
             return View(vm);
         }
 
@@ -199,7 +205,6 @@ namespace UBICALO.Controllers
 
         public ActionResult establecimientoInfo(int establecimientoID)
         {
-
             VmEstablecimientoInfo vm = new VmEstablecimientoInfo();
             vm.establecimientoID = establecimientoID;
             vm.fill();
@@ -298,6 +303,102 @@ namespace UBICALO.Controllers
         //    return File(bt, "image/png");
         //}
 
+
+        public ActionResult listarProductos()
+        {
+            VmListarProductos vm = new VmListarProductos();
+            vm.fill(((Asociado)Session["objUsuario"]).EstablecimientoID);
+            return View(vm);
+        }
+
+        [HttpPost]
+        public ActionResult listarProductos(VmListarProductos vm)
+        {
+            vm.fill(((Asociado)Session["objUsuario"]).EstablecimientoID);
+            return View(vm);
+        }
+
+
+
+        public ActionResult registrarProducto(int? productoID)
+        {
+            UbicaloEntities context = new UbicaloEntities();
+            VmRegistrarProducto vm = new VmRegistrarProducto();
+            vm.fill(context, productoID);            
+
+            return View(vm);
+        }
+
+        [HttpPost]
+        public ActionResult registrarProducto(VmRegistrarProducto vm, HttpPostedFileBase file)
+        {
+            UbicaloEntities context = new UbicaloEntities();
+
+            try
+            {                
+                Producto producto = null;
+
+                String categoriaNombre = context.Categoria.FirstOrDefault(x => x.CategoriaID == vm.categoria).Nombre;
+
+
+                if (vm.productoID.HasValue)
+                {                    
+                    producto = context.Producto.FirstOrDefault(x => x.ProductoID == vm.productoID);
+
+                    if (file != null && file.ContentLength > 0)
+                    {
+                        var fileName = Path.GetFileName(categoriaNombre+"-"+vm.nombre + ".jpg");
+                        var path = Path.Combine(Server.MapPath("~/Content/images/productos"), fileName);
+                        file.SaveAs(path);
+                        producto.imagen = fileName;
+                    }
+                }
+                else
+                {
+                    producto = new Producto();
+                    context.Producto.Add(producto);
+
+                    if (file != null && file.ContentLength > 0)
+                    {
+                        var fileName = Path.GetFileName(categoriaNombre + "-" + vm.nombre+".jpg");
+                        var path = Path.Combine(Server.MapPath("~/Content/images/productos"), fileName);
+                        file.SaveAs(path);
+                        producto.imagen = fileName;
+                    }
+                    else
+                    {
+                        producto.imagen = "default_product.gif";
+                    }
+
+                }
+
+                producto.Nombre = vm.nombre;
+                producto.Descripcion = vm.descripcion;
+                producto.Costo = vm.costo;
+                
+                producto.EstablecimientoID = ((Asociado)Session["objUsuario"]).EstablecimientoID;
+                producto.CategoriaID = vm.categoria;
+
+                context.SaveChanges();
+
+                return RedirectToAction("listarProductos");
+            }
+            catch (Exception)
+            {
+                vm.fill(context, null);
+                TryUpdateModel(vm);
+                return View(vm);
+            }
+        }
+
+        
+
+        public ActionResult estadoCuenta()
+        {
+            VmEstadoCuenta vmEstadoCuenta = new VmEstadoCuenta();
+            vmEstadoCuenta.fill(((Asociado)Session["objUsuario"]).EstablecimientoID);
+            return View(vmEstadoCuenta);
+        }
 
     }
 }

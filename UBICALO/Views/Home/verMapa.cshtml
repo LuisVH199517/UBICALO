@@ -56,16 +56,16 @@
                         lat: @p.Latitud ,
                         lng: @p.Longitud };
 
-                        var desc = "<img style='width:350px' src='@Url.Content(@p.imagen)'><br>"+
-                        "<p><h1> @p.Nombre </h1><a href='@Url.Action("establecimientoInfo", new { establecimientoID = p.EstablecimientoID })'>" +
-                        "<strong>Ver productos y servicios</strong></a></p>@p.Direccion<br>@p.Portal";
+                        var desc = "<img style='width:350px' src='@Url.Content("~/Content/images/establecimientos/"+@p.imagen)'><br>" +
+                        "<p><a href='@Url.Action("establecimientoInfo", new { establecimientoID = p.EstablecimientoID })'>" +
+                        "<h2> @p.Nombre </h2></a></p>@p.Direccion<br>@p.Portal";
 
-                        addMarker(posMarkers, '@p.Nombre', desc);
+                                addMarker(posMarkers, '@p.Nombre', desc);
                     </text>
                 }
-                
 
-            });
+
+                        });
         }
 
         setMapOnAll(map);
@@ -76,7 +76,7 @@
 
     google.maps.event.addDomListener(window, 'load', initMap);
 
-    
+
 
     // Adds a marker to the map and push to the array.
     function addMarker(location,titulo,descripcion)

@@ -225,9 +225,12 @@
     <Compile Include="ViewModel\VmCompraProducto.cs" />
     <Compile Include="ViewModel\VmEstablecimientoBusqueda.cs" />
     <Compile Include="ViewModel\VmEstablecimientoInfo.cs" />
+    <Compile Include="ViewModel\VmEstadoCuenta.cs" />
     <Compile Include="ViewModel\VmEstaMapa.cs" />
+    <Compile Include="ViewModel\VmListarProductos.cs" />
     <Compile Include="ViewModel\VmLogin.cs" />
     <Compile Include="ViewModel\VmProductosAdquiridos.cs" />
+    <Compile Include="ViewModel\VmRegistrarProducto.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -286,6 +289,9 @@
     <Content Include="Views\Home\compraProducto.cshtml" />
     <Content Include="Views\Home\productosAdquiridos.cshtml" />
     <Content Include="Views\Home\establecimientoBusqueda.cshtml" />
+    <Content Include="Views\Home\listarProductos.cshtml" />
+    <Content Include="Views\Home\registrarProducto.cshtml" />
+    <Content Include="Views\Home\estadoCuenta.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
