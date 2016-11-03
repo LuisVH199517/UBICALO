@@ -176,6 +176,8 @@ namespace UBICALO.Controllers
 
 
 
+        // Cliente START
+
         public ActionResult verMapa()
         {
             VmEstaMapa vm = new VmEstaMapa();
@@ -266,6 +268,10 @@ namespace UBICALO.Controllers
             return File(bt, "image/png");
         }
 
+        // Cliente END
+
+        
+        // Asociado START
 
         public ActionResult listarProductos()
         {
@@ -362,6 +368,178 @@ namespace UBICALO.Controllers
             vmEstadoCuenta.fill(((Asociado)Session["objUsuario"]).EstablecimientoID);
             return View(vmEstadoCuenta);
         }
+
+        // Asociado END
+
+        // Administrador START
+
+        public ActionResult listarAsociados()
+        {
+            VmListarAsociados vmListarAsociados = new VmListarAsociados();
+            vmListarAsociados.fill();
+            return View(vmListarAsociados);
+        }
+
+        
+        [HttpPost]
+        public ActionResult listarAsociados(VmListarAsociados vm)
+        {
+            vm.fill();
+            return View(vm);
+        }
+
+        public ActionResult registrarAsociado(int? asociadoID)
+        {
+            VmRegistrarAsociado vm = new VmRegistrarAsociado();
+            vm.fill(asociadoID);
+            return View(vm);
+        }
+
+        [HttpPost]
+        public ActionResult registrarAsociado(VmRegistrarAsociado vm, HttpPostedFileBase file)
+        {
+            UbicaloEntities context = new UbicaloEntities();
+            try
+            {
+                Asociado asociado = null;
+                if (vm.asociadoID.HasValue)
+                {
+                    asociado = context.Asociado.FirstOrDefault(x => x.AsociadoID == vm.asociadoID);
+
+                    if (file != null && file.ContentLength > 0)
+                    {
+                        var fileName = asociado.Usuario+".jpg";// Path.GetFileName(file.FileName);
+                        var path = Path.Combine(Server.MapPath("~/Content/images/users"), fileName);
+                        file.SaveAs(path);
+                        asociado.Foto = fileName;
+                    }
+                    //else
+                    //{
+
+                    //    obj.imagen = "portfolio5.jpg";
+                    //}
+                }
+                else
+                {
+                    asociado = new Asociado();
+                    context.Asociado.Add(asociado);
+
+                    if (file != null && file.ContentLength > 0)
+                    {
+                        var fileName = vm.usuario+".jpg";// Path.GetFileName(file.FileName);
+                        var path = Path.Combine(Server.MapPath("~/Content/images/users"), fileName);
+                        file.SaveAs(path);
+                        asociado.Foto = fileName;
+                    }
+                    else
+                    {
+                        asociado.Foto = "user.png";
+                    }
+                    
+                }
+
+                asociado.Usuario = vm.usuario;
+                asociado.Clave = vm.clave;
+                asociado.EstablecimientoID = vm.establecimientoId;
+                
+                context.SaveChanges();
+
+                return RedirectToAction("listarAsociados");
+            }
+            catch (Exception)
+            {
+                vm.fill(null);
+                TryUpdateModel(vm);
+                return View(vm);
+            }
+        }
+
+
+
+
+        public ActionResult listarEstablecimiento()
+        {
+            VmEstablecimientoBusqueda vm = new VmEstablecimientoBusqueda();
+            vm.fill();
+
+            return View(vm);
+        }
+
+        public ActionResult registrarEstablecimiento(int? establecimientoID)
+        {
+            VmRegistrarEstablecimiento vm = new VmRegistrarEstablecimiento();
+            vm.fill(establecimientoID);
+            return View(vm);
+        }
+
+        [HttpPost]
+        public ActionResult agregarEstablecimiento(VmRegistrarEstablecimiento vm, HttpPostedFileBase file)
+        {
+            UbicaloEntities context = new UbicaloEntities();
+
+            try
+            {
+                Establecimiento establecimiento = null;
+
+                if (vm.establecimientoID.HasValue)
+                {
+                    establecimiento = context.Establecimiento.FirstOrDefault(x => x.EstablecimientoID == vm.establecimientoID);
+
+                    if (file != null && file.ContentLength > 0)
+                    {
+                        var fileName = Path.GetFileName(file.FileName);
+                        var path = Path.Combine(Server.MapPath("~/Content/images"), fileName);
+                        file.SaveAs(path);
+                        establecimiento.imagen = "~/Content/images/" + fileName;
+                    }
+                    //else
+                    //{
+
+                    //    obj.imagen = "portfolio5.jpg";
+                    //}
+                }
+                else
+                {
+                    establecimiento = new Establecimiento();
+                    context.Establecimiento.Add(establecimiento);
+
+                    if (file != null && file.ContentLength > 0)
+                    {
+                        var fileName = Path.GetFileName(file.FileName);
+                        var path = Path.Combine(Server.MapPath("~/Content/images"), fileName);
+                        file.SaveAs(path);
+                        establecimiento.imagen = "~/Content/images/" + fileName;
+                    }
+                    else
+                    {
+                        establecimiento.imagen = "~/Content/images/4.jpg";
+                    }
+                }
+
+                establecimiento.Nombre = vm.nombre;
+                establecimiento.Direccion = vm.direccion;
+                establecimiento.RUC = vm.ruc;
+                establecimiento.Latitud = vm.latitud;
+                establecimiento.Longitud = vm.longitud;
+                establecimiento.Portal = vm.portal;
+
+                context.SaveChanges();
+
+                return RedirectToAction("listarEstablecimiento");
+            }
+            catch (Exception)
+            {
+                vm.fill(null);
+                TryUpdateModel(vm);
+                return View(vm);
+            }
+
+        }
+
+
+
+        // Administrador END
+
 
     }
 }
