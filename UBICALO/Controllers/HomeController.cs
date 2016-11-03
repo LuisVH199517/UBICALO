@@ -10,8 +10,7 @@ using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
 
-//using QRCoder;
-
+using UBICALO.Helpers;
 
 namespace UBICALO.Controllers
 {
@@ -231,35 +230,7 @@ namespace UBICALO.Controllers
                 Compra compra = new Compra();
                 compra.ClienteID = ((Cliente)Session["objUsuario"]).ClienteID;
                 compra.ProductoID = vm.productoID;
-                //insertar codigo de generacion de cosigo QR
-                //BarcodeLib. qrbarcode = new BarcodeLib.Barcode();
-
-                //qrbarcode.
-                //BarCode qrcode = new BarCode();
-                //qrcode.Symbology = KeepAutomation.Barcode.Symbology.QRCode;
-
-
-                //QRCodeGenerator qrc = new QRCodeGenerator();
-                //QRCodeGenerator.QRCode qc = qrc.CreateQrCode(compra.PlanID.ToString(), QRCodeGenerator.ECCLevel.Q);
-                //Bitmap bmp = qc.GetGraphic(20);
-
-                //MemoryStream ms = new MemoryStream();
-
-                //bmp.Save(ms, ImageFormat.Png);
-
-                //byte[] bt = ms.ToArray();
-
-                //Image i = new Image();
-
-                //var filename = Path.GetFileName(bt.FileName);
-                //var path = Path.Combine(Server.MapPath("~/Content/image/"), filename);
-                //file.SaveAs(path);
-                //tyre.Url = filename;
-
-                //_db.EventModels.AddObject(eventmodel);
-                //_db.SaveChanges();
-                //return RedirectToAction("Index");
-
+                
                 UbicaloEntities context = new UbicaloEntities();
 
                 compra.QR = "codigo";
@@ -285,23 +256,15 @@ namespace UBICALO.Controllers
             return View(vm);
         }
 
-
-        //respnde una imagen conelid de peticion y genera un codigo q a paritr de esto
-        //public ActionResult getQr(int id)
-        //{
-        //    string text = id.ToString();
-
-        //    QRCodeGenerator qrc = new QRCodeGenerator();
-        //    QRCodeGenerator.QRCode qc = qrc.CreateQrCode(text, QRCodeGenerator.ECCLevel.Q);
-        //    Bitmap bmp = qc.GetGraphic(20);
-
-        //    MemoryStream ms = new MemoryStream();
-
-        //    bmp.Save(ms, ImageFormat.Png);
-
-        //    byte[] bt = ms.ToArray();
-        //    return File(bt, "image/png");
-        //}
+        
+        public ActionResult getQr(int id)
+        {
+            Bitmap bmp = QRHelper.GenerateQrCode(id.ToString());
+            MemoryStream ms = new MemoryStream();
+            bmp.Save(ms, ImageFormat.Png);
+            byte[] bt = ms.ToArray();
+            return File(bt, "image/png");
+        }
 
 
         public ActionResult listarProductos()
