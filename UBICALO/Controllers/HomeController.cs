@@ -16,6 +16,9 @@ namespace UBICALO.Controllers
 {
     public class HomeController : Controller
     {
+        UbicaloEntities _context = new UbicaloEntities();
+        const int productsPerPageInTable = 10;
+        const int productsPerPageInDiv = 8;
 
         public ActionResult Index()
         {
@@ -29,13 +32,44 @@ namespace UBICALO.Controllers
             return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult Contact(int? id)
         {
-            ViewBag.Message = "Your contact page.";
+            var page = id ?? 0;
+            
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("_Products", GetPaginatedProducts(page));
+            }
 
-            return View();
+            return View("Contact", _context.Producto.Take(productsPerPageInTable));
         }
 
+        [HttpPost]
+        public ActionResult Contact(VmListarProductos2 vm)
+        {
+            var page = id ?? 0;
+
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("_Products", GetPaginatedProducts(page));
+            }
+
+            return View("Contact", _context.Producto.Take(productsPerPageInTable));
+        }
+
+
+        private List<Producto> GetPaginatedProducts(int page = 1)
+        {
+            var skipRecords = page * productsPerPageInTable;
+
+            var listOfProducts = _context.Producto;
+
+            return listOfProducts.
+                OrderBy(x => x.ProductoID).
+                Skip(skipRecords).
+                Take(productsPerPageInTable).ToList();
+        }
+        
         public ActionResult login()
         {
             return View();
@@ -46,9 +80,7 @@ namespace UBICALO.Controllers
         {
             try
             {
-                UbicaloEntities context = new UbicaloEntities();
-
-                Cliente cliente = context.Cliente.FirstOrDefault(x => x.Usuario == vm.usuario && x.Clave == vm.clave);
+                Cliente cliente = _context.Cliente.FirstOrDefault(x => x.Usuario == vm.usuario && x.Clave == vm.clave);
                 if (cliente != null)
                 {
                     if (cliente.IDApi != null)
@@ -58,7 +90,7 @@ namespace UBICALO.Controllers
                     return RedirectToAction("verMapa");
                 }
 
-                Asociado asociado = context.Asociado.FirstOrDefault(x => x.Usuario == vm.usuario && x.Clave == vm.clave);
+                Asociado asociado = _context.Asociado.FirstOrDefault(x => x.Usuario == vm.usuario && x.Clave == vm.clave);
                 if (asociado != null)
                 {
                     Session["objUsuario"] = asociado;
@@ -66,7 +98,7 @@ namespace UBICALO.Controllers
                     return RedirectToAction("estadoCuenta");
                 }
 
-                Administrador administrador = context.Administrador.FirstOrDefault(x => x.Usuario == vm.usuario && x.Clave == vm.clave);
+                Administrador administrador = _context.Administrador.FirstOrDefault(x => x.Usuario == vm.usuario && x.Clave == vm.clave);
                 if (administrador != null)
                 {
                     Session["objUsuario"] = administrador;
@@ -94,17 +126,15 @@ namespace UBICALO.Controllers
                 cliente.Correo = vm.correo;
                 cliente.IDApi = null;
                 cliente.Foto = "user.png";
-                //string imageFile = System.Web.HttpContext.Current.Server.MapPath("~/Content/images/user.png");
+                //string imageFile = System.Web.Http_context.Current.Server.MapPath("~/Content/images/user.png");
                 //var srcImage = Image.FromFile(imageFile);
                 //var stream = new MemoryStream();
                 //srcImage.Save(stream, ImageFormat.Png);
                 //cliente.Foto= stream.ToArray();
                 //cliente.Rol = "User";
-
-                UbicaloEntities context = new UbicaloEntities();
-
-                context.Cliente.Add(cliente);
-                context.SaveChanges();
+                
+                _context.Cliente.Add(cliente);
+                _context.SaveChanges();
                 Session["objUsuario"] = cliente;
                 Session["rol"] = "C";
                 return RedirectToAction("verMapa");
@@ -121,8 +151,7 @@ namespace UBICALO.Controllers
         {
             try
             {
-                UbicaloEntities context = new UbicaloEntities();
-                Cliente cliente = context.Cliente.FirstOrDefault(x => x.IDApi == vm.FbID);
+                Cliente cliente = _context.Cliente.FirstOrDefault(x => x.IDApi == vm.FbID);
 
                 if (cliente == null)
                 {
@@ -136,15 +165,15 @@ namespace UBICALO.Controllers
                     cliente.IDApi = vm.FbID;
                     cliente.Foto = vm.FbID; //vm.imagen;
 
-                    //string imageFile = System.Web.HttpContext.Current.Server.MapPath("~/Content/images/user.png");
+                    //string imageFile = System.Web.Http_context.Current.Server.MapPath("~/Content/images/user.png");
                     //var srcImage = Image.FromFile(imageFile);
                     //var stream = new MemoryStream();
                     //srcImage.Save(stream, ImageFormat.Png);
                     //cliente.Foto= stream.ToArray();
                     //cliente.Rol = "User";
 
-                    context.Cliente.Add(cliente);
-                    context.SaveChanges();
+                    _context.Cliente.Add(cliente);
+                    _context.SaveChanges();
 
                     Session["objUsuario"] = cliente;
                     Session["rol"] = "C";
@@ -233,12 +262,11 @@ namespace UBICALO.Controllers
                 compra.ClienteID = ((Cliente)Session["objUsuario"]).ClienteID;
                 compra.ProductoID = vm.productoID;
                 
-                UbicaloEntities context = new UbicaloEntities();
 
                 compra.QR = "codigo";
 
-                context.Compra.Add(compra);
-                context.SaveChanges();
+                _context.Compra.Add(compra);
+                _context.SaveChanges();
 
                 return RedirectToAction("productosAdquiridos");
             }
@@ -286,14 +314,12 @@ namespace UBICALO.Controllers
             vm.fill(((Asociado)Session["objUsuario"]).EstablecimientoID);
             return View(vm);
         }
-
-
-
+        
         public ActionResult registrarProducto(int? productoID)
         {
-            UbicaloEntities context = new UbicaloEntities();
+            UbicaloEntities _context = new UbicaloEntities();
             VmRegistrarProducto vm = new VmRegistrarProducto();
-            vm.fill(context, productoID);            
+            vm.fill(_context, productoID);            
 
             return View(vm);
         }
@@ -301,18 +327,16 @@ namespace UBICALO.Controllers
         [HttpPost]
         public ActionResult registrarProducto(VmRegistrarProducto vm, HttpPostedFileBase file)
         {
-            UbicaloEntities context = new UbicaloEntities();
-
             try
             {                
                 Producto producto = null;
 
-                String categoriaNombre = context.Categoria.FirstOrDefault(x => x.CategoriaID == vm.categoria).Nombre;
+                String categoriaNombre = _context.Categoria.FirstOrDefault(x => x.CategoriaID == vm.categoria).Nombre;
 
 
                 if (vm.productoID.HasValue)
                 {                    
-                    producto = context.Producto.FirstOrDefault(x => x.ProductoID == vm.productoID);
+                    producto = _context.Producto.FirstOrDefault(x => x.ProductoID == vm.productoID);
 
                     if (file != null && file.ContentLength > 0)
                     {
@@ -325,7 +349,7 @@ namespace UBICALO.Controllers
                 else
                 {
                     producto = new Producto();
-                    context.Producto.Add(producto);
+                    _context.Producto.Add(producto);
 
                     if (file != null && file.ContentLength > 0)
                     {
@@ -348,13 +372,13 @@ namespace UBICALO.Controllers
                 producto.EstablecimientoID = ((Asociado)Session["objUsuario"]).EstablecimientoID;
                 producto.CategoriaID = vm.categoria;
 
-                context.SaveChanges();
+                _context.SaveChanges();
 
                 return RedirectToAction("listarProductos");
             }
             catch (Exception)
             {
-                vm.fill(context, null);
+                vm.fill(_context, null);
                 TryUpdateModel(vm);
                 return View(vm);
             }
@@ -398,13 +422,12 @@ namespace UBICALO.Controllers
         [HttpPost]
         public ActionResult registrarAsociado(VmRegistrarAsociado vm, HttpPostedFileBase file)
         {
-            UbicaloEntities context = new UbicaloEntities();
             try
             {
                 Asociado asociado = null;
                 if (vm.asociadoID.HasValue)
                 {
-                    asociado = context.Asociado.FirstOrDefault(x => x.AsociadoID == vm.asociadoID);
+                    asociado = _context.Asociado.FirstOrDefault(x => x.AsociadoID == vm.asociadoID);
 
                     if (file != null && file.ContentLength > 0)
                     {
@@ -422,7 +445,7 @@ namespace UBICALO.Controllers
                 else
                 {
                     asociado = new Asociado();
-                    context.Asociado.Add(asociado);
+                    _context.Asociado.Add(asociado);
 
                     if (file != null && file.ContentLength > 0)
                     {
@@ -442,7 +465,7 @@ namespace UBICALO.Controllers
                 asociado.Clave = vm.clave;
                 asociado.EstablecimientoID = vm.establecimientoId;
                 
-                context.SaveChanges();
+                _context.SaveChanges();
 
                 return RedirectToAction("listarAsociados");
             }
@@ -475,15 +498,13 @@ namespace UBICALO.Controllers
         [HttpPost]
         public ActionResult agregarEstablecimiento(VmRegistrarEstablecimiento vm, HttpPostedFileBase file)
         {
-            UbicaloEntities context = new UbicaloEntities();
-
             try
             {
                 Establecimiento establecimiento = null;
 
                 if (vm.establecimientoID.HasValue)
                 {
-                    establecimiento = context.Establecimiento.FirstOrDefault(x => x.EstablecimientoID == vm.establecimientoID);
+                    establecimiento = _context.Establecimiento.FirstOrDefault(x => x.EstablecimientoID == vm.establecimientoID);
 
                     if (file != null && file.ContentLength > 0)
                     {
@@ -501,7 +522,7 @@ namespace UBICALO.Controllers
                 else
                 {
                     establecimiento = new Establecimiento();
-                    context.Establecimiento.Add(establecimiento);
+                    _context.Establecimiento.Add(establecimiento);
 
                     if (file != null && file.ContentLength > 0)
                     {
@@ -523,7 +544,7 @@ namespace UBICALO.Controllers
                 establecimiento.Longitud = vm.longitud;
                 establecimiento.Portal = vm.portal;
 
-                context.SaveChanges();
+                _context.SaveChanges();
 
                 return RedirectToAction("listarEstablecimiento");
             }

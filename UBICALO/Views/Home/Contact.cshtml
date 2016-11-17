@@ -1,4 +1,88 @@
-﻿@{
+﻿
+@model UBICALO.ViewModel.VmListarProductos2
+
+@{
     ViewBag.Title = "Contact";
-    Layout = null;
 }
+
+<h2>@ViewBag.Title</h2>
+
+<div class="page-title">
+    <div class="title_left">
+        <h3>Productos / Servicios</h3>
+    </div>
+
+    <form role="form" method="post" action="@Url.Action("listarProductos2")">
+        <div class="title_right">
+            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                <div class="input-group">
+                    @Html.EditorFor(x => x.filtro, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nombre..." } })
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">Buscar</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="clearfix"></div>
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+        <div id="container" class="x_content">
+            <table class="table table-striped responsive-utilities jambo_table bulk_action">
+                <thead>
+                    <tr class="headings">
+                        <th class="column-title">Nombre </th>
+                        <th class="column-title">Descripción </th>
+                        <th class="column-title">Costo </th>
+                        <th class="column-title">Categoría </th>
+                        <th class="column-title">Opción </th>
+                    </tr>
+                </thead>
+                <tbody id="productList">
+                    @Html.Partial("_Products")
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="loading"></div>
+
+
+
+<script type="text/javascript">
+
+    var page = 0;
+    var _inCallback = false;
+
+    function loadProducts() {
+        if (page > -1 && !_inCallback) {
+            _inCallback = true;
+            page++;
+            $('div#loading').html('<p>CARGANDO...</p>');
+            $.get("/Home/Contact/" + page, function (data) {
+                if (data != '') {
+                    $("#productList").append(data);
+                }
+                else {
+                    page = -1;
+                }
+
+                _inCallback = false;
+                $('div#loading').empty();
+            });
+        }
+    }
+
+    var dcList = true;
+
+    $(window).scroll(function () {
+        if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+            loadProducts();
+        }
+    });
+</script>
+
+

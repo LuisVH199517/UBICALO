@@ -19,8 +19,9 @@ namespace UBICALO.ViewModel
 
             if (!String.IsNullOrEmpty(filtro))
                 query = query.Where(x => x.Nombre.Contains(filtro.ToUpper()));
-            
+
             this.productos = query.ToList();
         }
+        
     }
 }

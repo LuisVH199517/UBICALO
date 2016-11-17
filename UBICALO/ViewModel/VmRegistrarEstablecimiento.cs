@@ -50,4 +50,3 @@ namespace UBICALO.ViewModel
     }
 
 }
-}
