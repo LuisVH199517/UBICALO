@@ -25,12 +25,33 @@ namespace UBICALO.Controllers
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult About(int? id)
         {
-            ViewBag.Message = "Your application description page.";
+            var page = id ?? 0;
 
-            return View();
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("_ProductsInDiv", GetPaginatedProducts(page, Session["filtro"].ToString()));
+            }
+            VmEstablecimientoInfo2 vm = new VmEstablecimientoInfo2();
+            vm.productos = _context.Producto.Take(productsPerPageInTable);
+            Session["filtro"] = "";
+            return View(vm);
         }
+
+        [HttpPost]
+        public ActionResult About(VmEstablecimientoInfo2 vm)
+        {
+            Session["filtro"] = vm.filtro;
+            //if (Request.IsAjaxRequest())
+            //{
+            //    return PartialView("_Products", GetPaginatedProducts(vm.page, Session["filtro"].ToString()));
+            //}
+
+            vm.productos = GetPaginatedProducts(0, vm.filtro);
+            return View(vm);
+        }
+
 
         public ActionResult Contact(int? id)
         {
@@ -38,7 +59,7 @@ namespace UBICALO.Controllers
             
             if (Request.IsAjaxRequest())
             {
-                return PartialView("_Products", GetPaginatedProducts(page, Session["filtro"].ToString()));
+                return PartialView("_ProductsInTable", GetPaginatedProducts(page, Session["filtro"].ToString()));
             }
             VmListarProductos2 vm = new VmListarProductos2();
             vm.productos = _context.Producto.Take(productsPerPageInTable);

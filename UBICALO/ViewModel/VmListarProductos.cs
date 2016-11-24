@@ -8,7 +8,7 @@ namespace UBICALO.ViewModel
 {
     public class VmListarProductos
     {
-        public List<Producto> productos { get; set; }
+        public IEnumerable<Producto> productos { get; set; }
         public String filtro { get; set; }
 
         public void fill(int estableciminetoID)
@@ -20,8 +20,7 @@ namespace UBICALO.ViewModel
             if (!String.IsNullOrEmpty(filtro))
                 query = query.Where(x => x.Nombre.Contains(filtro.ToUpper()));
 
-            this.productos = query.ToList();
+            this.productos = query;
         }
-        
     }
 }

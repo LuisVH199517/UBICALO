@@ -1,7 +1,76 @@
-﻿@{
+﻿@model UBICALO.ViewModel.VmEstablecimientoInfo2
+@{
     ViewBag.Title = "About";
 }
 <h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
 
-<p>Use this area to provide additional information.</p>
+
+
+<div class="">
+
+    <div class="page-title">
+        <div class="title_left">
+            @if (Model.establecimientoNombre != null)
+            {
+                <h3>Productos y servicios de @Model.establecimientoNombre</h3>
+            }
+            else
+            {
+                <h3>Productos y servicios</h3>
+            }
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+    <div class="row">
+        <div>
+            <!--</div>class="col-md-12 col-sm-12 col-xs-12">-->
+            <div class="x_panel">
+                <div class="x_content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            @Html.Partial("_ProductsInDiv", Model.productos)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="loading"></div>
+
+
+
+<script type="text/javascript">
+
+    var page = 0;
+    var _inCallback = false;
+
+    function loadProducts() {
+        if (page > -1 && !_inCallback) {
+            _inCallback = true;
+            page++;
+            $('div#loading').html('<p>CARGANDO...</p>');
+            $.get("/Home/About/" + page, function (data) {
+                if (data != '') {
+                    $("#productList").append(data);
+                }
+                else {
+                    page = -1;
+                }
+
+                _inCallback = false;
+                $('div#loading').empty();
+            });
+        }
+    }
+
+    var dcList = true;
+
+    $(window).scroll(function () {
+        if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+            loadProducts();
+        }
+    });
+</script>

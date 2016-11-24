@@ -7,7 +7,7 @@
         <h3>Productos / Servicios</h3>
     </div>
 
-    <form role="form" method="post" action="@Url.Action("listarProductos")">
+    <form role="form" method="post" action="@Url.Action("Contact")">
         <div class="title_right">
             <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
                 <div class="input-group">
@@ -22,22 +22,9 @@
 </div>
 
 <div class="clearfix"></div>
-<div class="col-md-12 col-sm-12 col-xs-12">
+<div>
     <div class="x_panel">
-        <!--<div class="x_title">
-            <h2>Productos / Servicios de establecimiento</h2>
-            <ul class="nav navbar-right panel_toolbox">
-                <li>
-                    <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                </li>
-                <li>
-                    <a class="close-link"><i class="fa fa-close"></i></a>
-                </li>
-            </ul>
-            <div class="clearfix"></div>
-        </div>-->
-        <div class="x_content">
-            @*<p>Add class <code>bulk_action</code> to table for bulk actions options on row select</p>*@
+        <div id="container" class="x_content">
             <table class="table table-striped responsive-utilities jambo_table bulk_action">
                 <thead>
                     <tr class="headings">
@@ -46,31 +33,51 @@
                         <th class="column-title">Costo </th>
                         <th class="column-title">Categoría </th>
                         <th class="column-title">Opción </th>
-                        <th class="bulk-actions" colspan="7">
-                            <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
-                        </th>
                     </tr>
                 </thead>
-                <tbody>
-
-                    @foreach (var p in Model.productos)
-                    {
-                        <tr class="even pointer">                            
-                            <td>@p.Nombre</td>
-                            <td>@p.Descripcion</td>
-                            <td class="a-right a-right">S/ @p.Costo</td>
-                            <td>@p.Categoria.Nombre</td>
-                            <td class="last">
-                                <a class="btn-default" href="@Url.Action("registrarProducto",new {productoID=p.ProductoID })"><i class="fa fa-edit"></i> Editar</a>
-                            </td>
-                        </tr>
-                    }
-
+                <tbody id="productList">
+                    @Html.Partial("_ProductsInTable", Model.productos)
                 </tbody>
             </table>
         </div>
     </div>
 </div>
 
+<div id="loading"></div>
+
+
+
+<script type="text/javascript">
+
+    var page = 0;
+    var _inCallback = false;
+
+    function loadProducts() {
+        if (page > -1 && !_inCallback) {
+            _inCallback = true;
+            page++;
+            $('div#loading').html('<p>CARGANDO...</p>');
+            $.get("/Home/Contact/" + page, function (data) {
+                if (data != '') {
+                    $("#productList").append(data);
+                }
+                else {
+                    page = -1;
+                }
+
+                _inCallback = false;
+                $('div#loading').empty();
+            });
+        }
+    }
+
+    var dcList = true;
+
+    $(window).scroll(function () {
+        if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+            loadProducts();
+        }
+    });
+</script>
 
 

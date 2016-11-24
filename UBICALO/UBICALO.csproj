@@ -233,6 +233,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModel\VmCompraProducto.cs" />
     <Compile Include="ViewModel\VmEstablecimientoBusqueda.cs" />
+    <Compile Include="ViewModel\VmEstablecimientoInfo2.cs" />
     <Compile Include="ViewModel\VmEstablecimientoInfo.cs" />
     <Compile Include="ViewModel\VmEstadoCuenta.cs" />
     <Compile Include="ViewModel\VmEstaMapa.cs" />
@@ -309,7 +310,8 @@
     <Content Include="Views\Home\estadoCuenta.cshtml" />
     <Content Include="Views\Home\listarAsociados.cshtml" />
     <Content Include="Views\Home\registrarAsociado.cshtml" />
-    <Content Include="Views\Shared\_Products.cshtml" />
+    <Content Include="Views\Shared\_ProductsInTable.cshtml" />
+    <Content Include="Views\Shared\_ProductsInDiv.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
