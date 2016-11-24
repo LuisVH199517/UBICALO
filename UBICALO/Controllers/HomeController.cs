@@ -17,7 +17,7 @@ namespace UBICALO.Controllers
     public class HomeController : Controller
     {
         UbicaloEntities _context = new UbicaloEntities();
-        const int productsPerPageInTable = 10;
+        const int productsPerPageInTable = 9;
         const int productsPerPageInDiv = 8;
 
         public ActionResult Index()
@@ -38,36 +38,48 @@ namespace UBICALO.Controllers
             
             if (Request.IsAjaxRequest())
             {
-                return PartialView("_Products", GetPaginatedProducts(page));
+                return PartialView("_Products", GetPaginatedProducts(page, Session["filtro"].ToString()));
             }
-
-            return View("Contact", _context.Producto.Take(productsPerPageInTable));
+            VmListarProductos2 vm = new VmListarProductos2();
+            vm.productos = _context.Producto.Take(productsPerPageInTable);
+            Session["filtro"] = "";
+            return View(vm);
         }
 
         [HttpPost]
         public ActionResult Contact(VmListarProductos2 vm)
         {
-            var page = id ?? 0;
+            Session["filtro"] = vm.filtro;
+            //if (Request.IsAjaxRequest())
+            //{
+            //    return PartialView("_Products", GetPaginatedProducts(vm.page, Session["filtro"].ToString()));
+            //}
 
-            if (Request.IsAjaxRequest())
-            {
-                return PartialView("_Products", GetPaginatedProducts(page));
-            }
-
-            return View("Contact", _context.Producto.Take(productsPerPageInTable));
+            vm.productos = GetPaginatedProducts(0,vm.filtro);
+            return View(vm);
         }
 
 
-        private List<Producto> GetPaginatedProducts(int page = 1)
+        private List<Producto> GetPaginatedProducts(int page = 1, String filtro = "")
         {
             var skipRecords = page * productsPerPageInTable;
 
-            var listOfProducts = _context.Producto;
+            var partialProducts = _context.Producto;
 
-            return listOfProducts.
+            if (!(String.IsNullOrEmpty(filtro)||filtro==""))
+            {
+                return partialProducts.
+                    Where(x => x.Nombre.Contains(filtro.ToUpper())).
+                    OrderBy(x => x.ProductoID).
+                    Skip(skipRecords).
+                    Take(productsPerPageInTable).ToList();
+            }
+
+            return partialProducts.
                 OrderBy(x => x.ProductoID).
                 Skip(skipRecords).
                 Take(productsPerPageInTable).ToList();
+
         }
         
         public ActionResult login()
@@ -234,7 +246,7 @@ namespace UBICALO.Controllers
 
 
         public ActionResult establecimientoInfo(int establecimientoID)
-        {
+        {                            
             VmEstablecimientoInfo vm = new VmEstablecimientoInfo();
             vm.establecimientoID = establecimientoID;
             vm.fill();
@@ -303,6 +315,7 @@ namespace UBICALO.Controllers
 
         public ActionResult listarProductos()
         {
+
             VmListarProductos vm = new VmListarProductos();
             vm.fill(((Asociado)Session["objUsuario"]).EstablecimientoID);
             return View(vm);

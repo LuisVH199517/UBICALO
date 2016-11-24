@@ -10,19 +10,17 @@ namespace UBICALO.ViewModel
     {        
         public IEnumerable<Producto> productos { get; set; }
         public String filtro { get; set; }
-        public bool isFiltrado { get; set; }
 
-        public void fill(int estableciminetoID)
-        {            
-            UbicaloEntities context = new UbicaloEntities();
+        //public void fill(int estableciminetoID)
+        //{            
+        //    UbicaloEntities context = new UbicaloEntities();
 
-            var query = context.Producto.Where(x => x.EstablecimientoID == estableciminetoID).AsQueryable();
+        //    var query = context.Producto.Where(x => x.EstablecimientoID == estableciminetoID).AsQueryable();
 
-            if (!String.IsNullOrEmpty(filtro))
-                query = query.Where(x => x.Nombre.Contains(filtro.ToUpper()));
+        //    if (!String.IsNullOrEmpty(filtro))
+        //        query = query.Where(x => x.Nombre.Contains(filtro.ToUpper()));
 
-            this.productos = query;
-        }
-
+        //    this.productos = query;
+        //}
     }
 }
